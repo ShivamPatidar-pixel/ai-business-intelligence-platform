@@ -85,3 +85,30 @@ ai-business-intelligence-platform/
 ├── dashboard/
 ├── tests/
 └── docs/
+
+
+## Current Progress
+
+### Week 1 - Completed
+
+- [x] Project setup
+- [x] Git & GitHub setup
+- [x] Data understanding
+- [x] Exploratory data analysis
+- [x] Generic data cleaning
+- [x] Generic feature engineering
+- [x] KPI engine
+- [x] Basic business insights
+- [x] Documentation
+
+### Current Pipeline
+
+Raw Data
+↓
+Data Cleaning
+↓
+Feature Engineering
+↓
+KPI Engine
+↓
+Business Insights
