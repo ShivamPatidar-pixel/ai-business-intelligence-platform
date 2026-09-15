@@ -124,3 +124,53 @@ def generate_insights(df):
     )
 
     return insights
+
+
+# -----------------------------
+# KPI ENGINE V2
+# -----------------------------
+
+def calculate_contribution(df, column):
+    """
+    Calculate percentage contribution of a numeric column.
+    """
+
+    total = df[column].sum()
+
+    if total == 0:
+        return pd.Series(0, index=df.index)
+
+    return (df[column] / total) * 100
+
+
+def rank_values(df, column, ascending=False):
+    """
+    Rank values in a dataframe column.
+    """
+
+    return df[column].rank(
+        ascending=ascending,
+        method="dense"
+    )
+
+
+def get_top_n(df, column, n=10):
+    """
+    Return top N rows based on a column.
+    """
+
+    return df.sort_values(
+        column,
+        ascending=False
+    ).head(n)
+
+
+def get_bottom_n(df, column, n=10):
+    """
+    Return bottom N rows based on a column.
+    """
+
+    return df.sort_values(
+        column,
+        ascending=True
+    ).head(n)
