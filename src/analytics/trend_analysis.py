@@ -121,3 +121,103 @@ def analyze_trend(time_series, metric_column):
 
     else:
         return "Stable"
+    
+def calculate_moving_average(
+    time_series,
+    metric_column,
+    window=3
+):
+    """
+    Calculate moving average for a time series.
+    """
+
+    result = time_series.copy()
+
+    result["moving_average"] = (
+        result[metric_column]
+        .rolling(window=window)
+        .mean()
+        .round(2)
+    )
+
+    return result
+
+def calculate_trend_strength(
+    time_series,
+    metric_column
+):
+    """
+    Calculate trend strength using
+    first and last values.
+    """
+
+    values = time_series[
+        metric_column
+    ].dropna()
+
+    if len(values) < 2:
+        return 0
+
+    first_value = values.iloc[0]
+    last_value = values.iloc[-1]
+
+    if first_value == 0:
+        return 0
+
+    strength = (
+        (last_value - first_value)
+        / abs(first_value)
+    ) * 100
+
+    return round(strength, 2)
+
+def generate_trend_summary(
+    time_series,
+    metric_column
+):
+    """
+    Generate a human-readable trend summary.
+    """
+
+    trend = analyze_trend(
+        time_series,
+        metric_column
+    )
+
+    strength = calculate_trend_strength(
+        time_series,
+        metric_column
+    )
+
+    if trend == "Increasing":
+
+        summary = (
+            f"{metric_column} is increasing "
+            f"with an overall growth of {strength}%."
+        )
+
+    elif trend == "Decreasing":
+
+        summary = (
+            f"{metric_column} is decreasing "
+            f"with an overall change of {strength}%."
+        )
+
+    elif trend == "Stable":
+
+        summary = (
+            f"{metric_column} is relatively stable."
+        )
+
+    else:
+
+        summary = (
+            f"Not enough data to determine "
+            f"the {metric_column} trend."
+        )
+
+    return {
+        "trend": trend,
+        "trend_strength_%": strength,
+        "summary": summary
+    }
